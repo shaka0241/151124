@@ -12,10 +12,10 @@ const router = createRouter({
     {
       path: '/about',
       name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue'),
+      meta : {
+        login: true
+      }
     },
     {
       path: '/registro',
@@ -25,4 +25,12 @@ const router = createRouter({
   ],
 })
 
+router.beforeEach((to, from, next) => {
+  const authRequired = to.meta.login
+  if (authRequired) {
+    next('/about')
+    router.push('/')
+  }
+  else next ()
+})
 export default router
